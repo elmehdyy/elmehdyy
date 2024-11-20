@@ -61,7 +61,7 @@ void calculate_difference(Date start, Date end) {
 
     int total_days = calculate_days(start, end);
 
-    printf("Difference: %d Years, %d Months, %d Days\n", years, months, days);
+    printf("your age: %d Years, %d Months, %d Days\n", years, months, days);
     printf("Total Days: %d\n", total_days);
 }
 
