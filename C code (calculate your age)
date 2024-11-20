@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int day;
+    int month;
+    int year;
+} Date;
+
+int days_in_month(int month, int year) {
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+        return 31;
+    } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+        return 30;
+    } else if (month == 2) {
+        
+        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+            return 29;
+        } else {
+            return 28;
+        }
+    }
+    return 0; 
+}
+
+
+int calculate_days(Date start, Date end) {
+    int total_days = 0;
+
+    
+    for (int year = start.year; year < end.year; year++) {
+        total_days += (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) ? 366 : 365;
+    }
+
+    for (int month = start.month; month <= 12; month++) {
+        total_days += days_in_month(month, start.year);
+    }
+
+    for (int month = 1; month < end.month; month++) {
+        total_days -= days_in_month(month, end.year);
+    }
+
+    total_days -= start.day;
+
+    return total_days;
+}
+
+void calculate_difference(Date start, Date end) {
+    int years = end.year - start.year;
+    int months = end.month - start.month;
+    int days = end.day - start.day;
+
+    if (days < 0) {
+        months--;
+        days += days_in_month(end.month - 1, end.year);
+    }
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    int total_days = calculate_days(start, end);
+
+    printf("Difference: %d Years, %d Months, %d Days\n", years, months, days);
+    printf("Total Days: %d\n", total_days);
+}
+
+int main() {
+    Date start_date, end_date;
+
+    printf("Enter the start date (DD MM YYYY): ");
+    scanf("%d %d %d", &start_date.day, &start_date.month, &start_date.year);
+
+    printf("Enter the end date (DD MM YYYY): ");
+    scanf("%d %d %d", &end_date.day, &end_date.month, &end_date.year);
+
+
+    calculate_difference(start_date, end_date);
+
+    return 0;
+}
